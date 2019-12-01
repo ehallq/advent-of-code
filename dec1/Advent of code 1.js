@@ -3,18 +3,21 @@
 function OnStart()
 {
 	var moduleMasses = readInput();
-	var totalRequiredFuel = getTotalFuel(moduleMasses);
-	showOnScreen(totalRequiredFuel);
+	var totalRequiredFuelPart1 = getTotalFuelPart1(moduleMasses);
+	var totalRequiredFuelPart2 = getTotalFuelPart2(moduleMasses);
+	showOnScreen([totalRequiredFuelPart1,totalRequiredFuelPart2]);
 	
 }
 
-function showOnScreen(fuel)
+function showOnScreen(solutions)
 {
-	lay = app.CreateLayout( "linear", "VCenter,FillXY" );	
-	app.AddLayout( lay );
-	txt = app.CreateText( "Total required fuel: "+fuel.toString());
-	txt.SetTextSize( 32 );
-	lay.AddChild( txt );
+  lay = app.CreateLayout( "linear", "VCenter,FillXY" );	
+  app.AddLayout( lay );
+  solutions.forEach(function(s,i) {
+   txt = app.CreateText( "Part "+(i+1)+": "+s.toString());
+ 	txt.SetTextSize( 32 );
+ 	lay.AddChild( txt );
+ })
 }
 
 
@@ -25,7 +28,13 @@ function readInput()
     return inputData;
 }
 
-function getTotalFuel(masses) {
+function getTotalFuelPart1(masses)
+{
+	 return masses.reduce((a, b) => a + calculateFuel(b), 0)
+}
+
+
+function getTotalFuelPart2(masses) {
  return masses.reduce((a, b) => a + getRequiredFuel(b), 0)
 }
 
